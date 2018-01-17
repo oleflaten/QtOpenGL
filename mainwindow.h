@@ -2,6 +2,10 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QWidget>
+
+class QSurface;
+class QTextEdit;
 
 namespace Ui {
 class MainWindow;
@@ -15,8 +19,19 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+private slots:
+    void start();
+    void renderWindowReady();
+    void renderWindowError(const QString &msg);
+
 private:
+    void addRenderWindow();
     Ui::MainWindow *ui;
+
+    QWidget *m_renderWindowContainer;
+    QSurface *m_surface;
+
+    QTextEdit *m_output;
 };
 
 #endif // MAINWINDOW_H
