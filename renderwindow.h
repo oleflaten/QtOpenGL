@@ -5,16 +5,19 @@
 #include <QOpenGLVertexArrayObject>
 #include <QOpenGLBuffer>
 #include <QOpenGLFunctions_4_1_Core>
+#include <QBasicTimer>
+#include <QTime>
 
 class QOpenGLContext;
 class QOpenGLShaderProgram;
 class Shader;
+class MainWindow;
 
 class RenderWindow : public QWindow, protected QOpenGLFunctions_4_1_Core
 {
     Q_OBJECT
 public:
-    RenderWindow(const QSurfaceFormat &format);
+    RenderWindow(const QSurfaceFormat &format, MainWindow *mainWindow);
     QOpenGLContext *context() { return m_context; }
     void exposeEvent(QExposeEvent *) override;
 
@@ -27,7 +30,6 @@ private slots:
 
 private:
     void init();
-    //void setupVertexAttribs();
 
     QOpenGLContext *m_context;
     bool m_initialized;
@@ -37,10 +39,22 @@ private:
 
     GLuint VBO;
     GLuint colorbuffer;
-
-//    QOpenGLVertexArrayObject m_vao;
-//    QOpenGLBuffer m_vbo;
     float m_angle;
+
+    QBasicTimer mTimer;     //timer that drives the gameloop
+    QTime mTimeStart;       //time variable that reads the actual FPS
+
+    MainWindow *mMainWindow;
+
+
+protected:
+//    void mousePressEvent(QMouseEvent *event) override{}
+//    void mouseMoveEvent(QMouseEvent *event) override{}
+    void keyPressEvent(QKeyEvent *event) override;
+//    void keyReleaseEvent(QKeyEvent *event) override{}
+//    void wheelEvent(QWheelEvent *event) override{}
+
+    void timerEvent(QTimerEvent *) override;
 };
 
 #endif // RENDERWINDOW_H

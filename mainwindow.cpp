@@ -28,9 +28,6 @@ void MainWindow::start()
 {
     QSurfaceFormat fmt;
 
-//    int idx = m_version->currentIndex();
-//    if (idx < 0)
-//        return;
     fmt.setVersion(4, 1);
     fmt.setProfile(QSurfaceFormat::CoreProfile);
     fmt.setRenderableType(QSurfaceFormat::OpenGL);
@@ -39,10 +36,9 @@ void MainWindow::start()
     fmt.setDepthBufferSize(16);
 
     m_output->clear();
-//    m_extensions->clear();
     qDebug() << "Requesting surface format" << fmt;
 
-    RenderWindow *renderWindow = new RenderWindow(fmt);
+    RenderWindow *renderWindow = new RenderWindow(fmt, this);
     if (!renderWindow->context()) {
         m_output->append(tr("Failed to create context"));
         delete renderWindow;
