@@ -6,6 +6,7 @@
 
 class QSurface;
 class QTextEdit;
+class RenderWindow;
 
 namespace Ui {
 class MainWindow;
@@ -29,6 +30,7 @@ private:
     Ui::MainWindow *ui;
 
     QWidget *m_renderWindowContainer;
+    RenderWindow *mRenderWindow;
     QSurface *m_surface;
 
     QTextEdit *m_output;

@@ -38,20 +38,20 @@ void MainWindow::start()
     m_output->clear();
     qDebug() << "Requesting surface format" << fmt;
 
-    RenderWindow *renderWindow = new RenderWindow(fmt, this);
-    if (!renderWindow->context()) {
+    mRenderWindow = new RenderWindow(fmt, this);
+    if (!mRenderWindow->context()) {
         m_output->append(tr("Failed to create context"));
-        delete renderWindow;
+        delete mRenderWindow;
         m_renderWindowContainer = new QWidget;
         addRenderWindow();
         return;
     }
-    m_surface = renderWindow;
+    m_surface = mRenderWindow;
 
-    connect(renderWindow, &RenderWindow::ready, this, &MainWindow::renderWindowReady);
-    connect(renderWindow, &RenderWindow::error, this, &MainWindow::renderWindowError);
+    connect(mRenderWindow, &RenderWindow::ready, this, &MainWindow::renderWindowReady);
+    connect(mRenderWindow, &RenderWindow::error, this, &MainWindow::renderWindowError);
 
-    m_renderWindowContainer = QWidget::createWindowContainer(renderWindow);
+    m_renderWindowContainer = QWidget::createWindowContainer(mRenderWindow);
     addRenderWindow();
 }
 

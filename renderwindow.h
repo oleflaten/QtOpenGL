@@ -18,6 +18,7 @@ public:
     RenderWindow(const QSurfaceFormat &format, MainWindow *mainWindow);
     QOpenGLContext *context() { return m_context; }
     void exposeEvent(QExposeEvent *) override;
+    void changeTimer(int newTime);
 
 signals:
     void ready();

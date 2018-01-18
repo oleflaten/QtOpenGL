@@ -6,11 +6,14 @@
 #include <sstream>
 #include <iostream>
 
-#include <QOpenGLFunctions>
+#include <QOpenGLFunctions_4_1_Core>
 
 //#include "GL/glew.h" //We use QOpenGLFunctions instead
 
-class Shader : protected QOpenGLFunctions
+//This class is pretty much a copy of the shader class at
+//https://github.com/SonarSystems/Modern-OpenGL-Tutorials/blob/master/%5BLIGHTING%5D/%5B8%5D%20Basic%20Lighting/Shader.h
+
+class Shader : protected QOpenGLFunctions_4_1_Core
 {
 public:
     GLuint Program;

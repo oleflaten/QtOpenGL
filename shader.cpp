@@ -4,7 +4,7 @@
 
 Shader::Shader(const GLchar *vertexPath, const GLchar *fragmentPath)
 {
-    initializeOpenGLFunctions();
+    initializeOpenGLFunctions();    //must do this to get access to OpenGL functions in QOpenGLFunctions
 
     // 1. Retrieve the vertex/fragment source code from filePath
     std::string vertexCode;

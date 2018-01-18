@@ -37,6 +37,12 @@ void RenderWindow::exposeEvent(QExposeEvent *)
     }
 }
 
+void RenderWindow::changeTimer(int newTime)
+{
+    mTimer.stop();
+    mTimer.start(newTime, this);
+}
+
 //Simple global for vertices - should belong to a class
 static GLfloat vertices[] = {
     0.0f, 0.707f, 0.0f,
