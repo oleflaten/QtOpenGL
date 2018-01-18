@@ -13,7 +13,7 @@
 RenderWindow::RenderWindow(const QSurfaceFormat &format, MainWindow *mainWindow)
     : m_context(0),
       m_initialized(false),
-      m_angle(0.0f),
+      mMove(0.0f),
       mMainWindow(mainWindow)
 
 {
@@ -58,12 +58,13 @@ void RenderWindow::init()
     QSurfaceFormat format = m_context->format();
 
     //Compile shaders:
-    m_program2 = new Shader("../QtOpenGL/plainvertex.vert", "../QtOpenGL/plainfragment.frag");
+    mShaderProgram = new Shader("../QtOpenGL/plainvertex.vert", "../QtOpenGL/plainfragment.frag");
 
     //Setting up pointer into shader:
-    m_colAttr = glGetUniformLocation( m_program2->Program, "colAttr" );
-    m_posAttr = glGetUniformLocation( m_program2->Program, "posAttr" );
-    //m_matrixUniform = glGetUniformLocation( m_program2->Program, "matrix" ); // enable in shader and in render() function
+    m_colAttr = glGetUniformLocation( mShaderProgram->Program, "colAttr" );
+    m_posAttr = glGetUniformLocation( mShaderProgram->Program, "posAttr" );
+
+    //m_matrixUniform = glGetUniformLocation( mShaderProgram->Program, "matrix" ); // enable in shader and in render() function also to use matrix
 
     //Vertex Array  Object
     GLuint containerVAO;
@@ -71,8 +72,8 @@ void RenderWindow::init()
     glBindVertexArray( containerVAO );
 
     //Vertex Buffer Object to hold vertices
-    glGenBuffers( 1, &VBO );
-    glBindBuffer( GL_ARRAY_BUFFER, VBO );
+    glGenBuffers( 1, &vertexBufferObject );
+    glBindBuffer( GL_ARRAY_BUFFER, vertexBufferObject );
     glBufferData( GL_ARRAY_BUFFER, sizeof( vertices ), vertices, GL_STATIC_DRAW );
 
     //Buffer to hold colors:
@@ -99,17 +100,18 @@ void RenderWindow::timerEvent(QTimerEvent *)
 {
     render();
 
+    //The rest here is just to show the frame rate:
     int msSinceLastFrame = mTimeStart.restart();    //restart() returns ms since last restart.
     static int frameCount{0};                       //counting actual frames for a quick "timer" for the statusbar
 
-    if (mMainWindow)    //if no editor, something is really wrong...
+    if (mMainWindow)    //if no mainWindow, something is really wrong...
     {
         ++frameCount;
-        if (frameCount > 60) //once pr 60 frames = once pr second
+        if (frameCount > 60) //once pr 60 frames =  update the message once pr second
         {
             //showing some statistics in status bar
-            //mMainWindow->statusBar()->showMessage(" FrameDraw in ms: " + QString::number(msSinceLastFrame));
-            frameCount = 0;
+            mMainWindow->statusBar()->showMessage(" FrameDraw: " + QString::number(msSinceLastFrame) + " ms");
+            frameCount = 0;     //reset to show a new message in 60 frames
         }
     }
 }
@@ -136,8 +138,9 @@ void RenderWindow::render()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
-    glUseProgram( m_program2->Program );
+    glUseProgram( mShaderProgram->Program );
 
+//    Uncomment this to use a matrix - also in vertex shader and in
 //    GLfloat modelviewmatrix[] = {
 //        1.0f , 0.0f , 0.0f , m_angle,
 //        0.0f, 1.0f, 0.0f , 0.0f ,
@@ -148,7 +151,7 @@ void RenderWindow::render()
 //    glUniformMatrix4fv( m_matrixUniform, 1, GL_FALSE, modelviewmatrix);
 
     glEnableVertexAttribArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject);
     glVertexAttribPointer(
                 0,                  // attribute. No particular reason for 0, but must match the layout in the shader.
                 3,                  // size
@@ -182,14 +185,19 @@ void RenderWindow::render()
     // and wait for vsync.
     m_context->swapBuffers(this);
 
-    std::cout << m_angle;
+    std::cout << mMove; //Just writing this out to see that this functions is called repeatedly
 
-    m_angle += 0.01f;
+    mMove += 0.01f;
 
-    // Instead of 0 wait a few more milliseconds before rendering again. This is
-    // only here to make the UI widgets more responsive on slower machines. We
-    // can afford it since our rendering is so lightweight.
-//    const int interval = 5;
-//    QTimer::singleShot(interval, this, &RenderWindow::render);
+
+/*
+ * Old timer - the new is calling timerEvent() and is started in exposeEvent()
+ * this makes the render() function to be called again and again
+ * Instead of 0 wait a few more milliseconds before rendering again. This is
+ * only here to make the UI widgets more responsive on slower machines. We
+ *  can afford it since our rendering is so lightweight.
+    const int interval = 5;
+    QTimer::singleShot(interval, this, &RenderWindow::render);
+*/
 }
 

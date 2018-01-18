@@ -2,8 +2,6 @@
 #define RENDERWINDOW_H
 
 #include <QWindow>
-#include <QOpenGLVertexArrayObject>
-#include <QOpenGLBuffer>
 #include <QOpenGLFunctions_4_1_Core>
 #include <QBasicTimer>
 #include <QTime>
@@ -34,12 +32,12 @@ private:
     QOpenGLContext *m_context;
     bool m_initialized;
     QOpenGLShaderProgram *m_program;
-    Shader *m_program2;
+    Shader *mShaderProgram;
     GLint m_posAttr, m_colAttr, m_matrixUniform;
 
-    GLuint VBO;
+    GLuint vertexBufferObject;
     GLuint colorbuffer;
-    float m_angle;
+    float mMove;
 
     QBasicTimer mTimer;     //timer that drives the gameloop
     QTime mTimeStart;       //time variable that reads the actual FPS
