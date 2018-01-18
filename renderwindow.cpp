@@ -45,7 +45,6 @@ void RenderWindow::init()
     initializeOpenGLFunctions();
 
     QSurfaceFormat format = m_context->format();
-    if (!m_program->addShaderFromSourceCode(QOpenGLShader::Vertex, vsrc)) {
 
     //Compile shaders:
     m_program2 = new Shader("../QtOpenGL/plainvertex.vert", "../QtOpenGL/plainfragment.frag");
