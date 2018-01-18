@@ -29,9 +29,9 @@ void RenderWindow::exposeEvent(QExposeEvent *)
 }
 
 static GLfloat vertices[] = {
-    0.0f, 0.707f,
-    -0.5f, -0.5f,
-    0.5f, -0.5f
+    0.0f, 0.707f, 0.0f,
+    -0.5f, -0.5f, 0.0f,
+    0.5f, -0.5f, 0.0f
 };
 
 static GLfloat colors[] = {
@@ -138,7 +138,7 @@ void RenderWindow::render()
     // and wait for vsync.
     m_context->swapBuffers(this);
 
-    m_angle += 0.01f;
+    //m_angle += 0.01f;
 
     // Instead of 0 wait a few more milliseconds before rendering again. This is
     // only here to make the UI widgets more responsive on slower machines. We
