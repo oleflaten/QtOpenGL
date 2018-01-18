@@ -7,6 +7,7 @@
 
 class QOpenGLContext;
 class QOpenGLShaderProgram;
+class Shader;
 
 class RenderWindow : public QWindow
 {
@@ -32,7 +33,8 @@ private:
     bool m_initialized;
     bool m_forceGLSL110;
     QOpenGLShaderProgram *m_program;
-    int m_posAttr, m_colAttr, m_matrixUniform;
+    Shader *m_program2;
+    GLint m_posAttr, m_colAttr, m_matrixUniform;
     QOpenGLVertexArrayObject m_vao;
     QOpenGLBuffer m_vbo;
     float m_angle;

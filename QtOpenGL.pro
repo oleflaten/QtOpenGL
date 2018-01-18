@@ -23,14 +23,26 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 
+#win32 {
+#    INCLUDEPATH += "../glew-2.1.0/include"
+#    LIBS *= "../glew-2.1.0/lib/Release/Win32/glew32s.lib"
+#}
+
+
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    renderwindow.cpp
+    renderwindow.cpp \
+    shader.cpp
 
 HEADERS += \
         mainwindow.h \
-    renderwindow.h
+    renderwindow.h \
+    shader.h
 
 FORMS += \
         mainwindow.ui
+
+DISTFILES += \
+    plainvertex.vert \
+    plainfragment.frag

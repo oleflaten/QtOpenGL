@@ -5,6 +5,8 @@
 #include <QOpenGLShaderProgram>
 #include <QOpenGLFunctions>
 
+#include "shader.h"
+
 RenderWindow::RenderWindow(const QSurfaceFormat &format)
     : m_context(0),
       m_initialized(false),
@@ -61,15 +63,16 @@ static GLfloat colors[] = {
 void RenderWindow::init()
 {
     m_program = new QOpenGLShaderProgram(this);
+    m_program2 = new Shader("../QtOpenGL/plainvertex.vert", "../QtOpenGL/plainfragment.frag");
 
     QSurfaceFormat format = m_context->format();
-    bool useNewStyleShader = format.profile() == QSurfaceFormat::CoreProfile;
-    // Try to handle 3.0 & 3.1 that do not have the core/compatibility profile concept 3.2+ has.
-    // This may still fail since version 150 (3.2) is specified in the sources but it's worth a try.
-    if (format.renderableType() == QSurfaceFormat::OpenGL && format.majorVersion() == 3 && format.minorVersion() <= 1)
-        useNewStyleShader = !format.testOption(QSurfaceFormat::DeprecatedFunctions);
-    if (m_forceGLSL110)
-        useNewStyleShader = false;
+//    bool useNewStyleShader = format.profile() == QSurfaceFormat::CoreProfile;
+//    // Try to handle 3.0 & 3.1 that do not have the core/compatibility profile concept 3.2+ has.
+//    // This may still fail since version 150 (3.2) is specified in the sources but it's worth a try.
+//    if (format.renderableType() == QSurfaceFormat::OpenGL && format.majorVersion() == 3 && format.minorVersion() <= 1)
+//        useNewStyleShader = !format.testOption(QSurfaceFormat::DeprecatedFunctions);
+//    if (m_forceGLSL110)
+//        useNewStyleShader = false;
 
     const char *vsrc = vertexShaderSource;
     const char *fsrc = fragmentShaderSource;
@@ -91,6 +94,13 @@ void RenderWindow::init()
     m_posAttr = m_program->attributeLocation("posAttr");
     m_colAttr = m_program->attributeLocation("colAttr");
     m_matrixUniform = m_program->uniformLocation("matrix");
+
+//    m_program2->Use();
+//    GLint objectColorLoc = glGetUniformLocation( lightingShader.Program, "objectColor" );
+//           GLint lightColorLoc = glGetUniformLocation( lightingShader.Program, "lightColor" );
+//           GLint lightPosLoc = glGetUniformLocation( lightingShader.Program, "lightPos" );
+
+//    m_posAttr = m_program2
 
     m_vbo.create();
     m_vbo.bind();
