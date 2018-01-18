@@ -4,12 +4,13 @@
 #include <QWindow>
 #include <QOpenGLVertexArrayObject>
 #include <QOpenGLBuffer>
+#include <QOpenGLFunctions>
 
 class QOpenGLContext;
 class QOpenGLShaderProgram;
 class Shader;
 
-class RenderWindow : public QWindow
+class RenderWindow : public QWindow, protected QOpenGLFunctions
 {
     Q_OBJECT
 public:
@@ -27,7 +28,7 @@ private slots:
 
 private:
     void init();
-    void setupVertexAttribs();
+    //void setupVertexAttribs();
 
     QOpenGLContext *m_context;
     bool m_initialized;
