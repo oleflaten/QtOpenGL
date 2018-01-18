@@ -52,7 +52,6 @@ void MainWindow::start()
     }
     m_surface = renderWindow;
 
-    renderWindow->setForceGLSL110(false);
     connect(renderWindow, &RenderWindow::ready, this, &MainWindow::renderWindowReady);
     connect(renderWindow, &RenderWindow::error, this, &MainWindow::renderWindowError);
 
@@ -64,46 +63,6 @@ void MainWindow::renderWindowReady()
 {
     QOpenGLContext *context = QOpenGLContext::currentContext();
     Q_ASSERT(context);
-
-//    QString vendor, renderer, version, glslVersion;
-//    const GLubyte *p;
-//    QOpenGLFunctions *f = context->functions();
-//    if ((p = f->glGetString(GL_VENDOR)))
-//        vendor = QString::fromLatin1(reinterpret_cast<const char *>(p));
-//    if ((p = f->glGetString(GL_RENDERER)))
-//        renderer = QString::fromLatin1(reinterpret_cast<const char *>(p));
-//    if ((p = f->glGetString(GL_VERSION)))
-//        version = QString::fromLatin1(reinterpret_cast<const char *>(p));
-//    if ((p = f->glGetString(GL_SHADING_LANGUAGE_VERSION)))
-//        glslVersion = QString::fromLatin1(reinterpret_cast<const char *>(p));
-
-//    m_output->append(tr("*** Context information ***"));
-//    m_output->append(tr("Vendor: %1").arg(vendor));
-//    m_output->append(tr("Renderer: %1").arg(renderer));
-//    m_output->append(tr("OpenGL version: %1").arg(version));
-//    m_output->append(tr("GLSL version: %1").arg(glslVersion));
-
-//    m_output->append(tr("\n*** QSurfaceFormat from context ***"));
-//    printFormat(context->format());
-
-//    m_output->append(tr("\n*** QSurfaceFormat from window surface ***"));
-//    printFormat(m_surface->format());
-
-//    m_output->append(tr("\n*** Qt build information ***"));
-//    const char *gltype[] = { "Desktop", "GLES 2", "GLES 1" };
-//    m_output->append(tr("Qt OpenGL configuration: %1")
-//                     .arg(QString::fromLatin1(gltype[QOpenGLContext::openGLModuleType()])));
-//    m_output->append(tr("Qt OpenGL library handle: %1")
-//                     .arg(QString::number(qintptr(QOpenGLContext::openGLModuleHandle()), 16)));
-
-//    QList<QByteArray> extensionList = context->extensions().toList();
-//    std::sort(extensionList.begin(), extensionList.end());
-//    m_extensions->append(tr("Found %1 extensions:").arg(extensionList.count()));
-//    Q_FOREACH (const QByteArray &ext, extensionList)
-//        m_extensions->append(QString::fromLatin1(ext));
-
-//    m_output->moveCursor(QTextCursor::Start);
-//    m_extensions->moveCursor(QTextCursor::Start);
 }
 
 void MainWindow::renderWindowError(const QString &msg)

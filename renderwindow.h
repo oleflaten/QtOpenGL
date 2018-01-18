@@ -4,20 +4,19 @@
 #include <QWindow>
 #include <QOpenGLVertexArrayObject>
 #include <QOpenGLBuffer>
-#include <QOpenGLFunctions>
+#include <QOpenGLFunctions_4_1_Core>
 
 class QOpenGLContext;
 class QOpenGLShaderProgram;
 class Shader;
 
-class RenderWindow : public QWindow, protected QOpenGLFunctions
+class RenderWindow : public QWindow, protected QOpenGLFunctions_4_1_Core
 {
     Q_OBJECT
 public:
     RenderWindow(const QSurfaceFormat &format);
     QOpenGLContext *context() { return m_context; }
     void exposeEvent(QExposeEvent *) override;
-    void setForceGLSL110(bool enable) { m_forceGLSL110 = enable; }
 
 signals:
     void ready();
@@ -32,12 +31,15 @@ private:
 
     QOpenGLContext *m_context;
     bool m_initialized;
-    bool m_forceGLSL110;
     QOpenGLShaderProgram *m_program;
     Shader *m_program2;
     GLint m_posAttr, m_colAttr, m_matrixUniform;
-    QOpenGLVertexArrayObject m_vao;
-    QOpenGLBuffer m_vbo;
+
+    GLuint VBO;
+    GLuint colorbuffer;
+
+//    QOpenGLVertexArrayObject m_vao;
+//    QOpenGLBuffer m_vbo;
     float m_angle;
 };
 
