@@ -6,4 +6,4 @@ uniform mat4 matrix;
 void main() {
    col = colAttr;
    gl_Position = matrix * posAttr;
-};
+}
