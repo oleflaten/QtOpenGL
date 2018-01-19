@@ -14,13 +14,14 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    m_output = new QTextEdit;
-    m_output->setReadOnly(true);
+    mOutput = new QTextEdit;
+    mOutput->setReadOnly(true);
     start();
 }
 
 MainWindow::~MainWindow()
 {
+    delete mRenderWindow;
     delete ui;
 }
 
@@ -35,23 +36,23 @@ void MainWindow::start()
     // The example rendering will need a depth buffer.
     fmt.setDepthBufferSize(16);
 
-    m_output->clear();
+    mOutput->clear();
     qDebug() << "Requesting surface format" << fmt;
 
     mRenderWindow = new RenderWindow(fmt, this);
     if (!mRenderWindow->context()) {
-        m_output->append(tr("Failed to create context"));
+        mOutput->append(tr("Failed to create context"));
         delete mRenderWindow;
-        m_renderWindowContainer = new QWidget;
+        mRenderWindowContainer = new QWidget;
         addRenderWindow();
         return;
     }
-    m_surface = mRenderWindow;
+    mSurface = mRenderWindow;
 
     connect(mRenderWindow, &RenderWindow::ready, this, &MainWindow::renderWindowReady);
     connect(mRenderWindow, &RenderWindow::error, this, &MainWindow::renderWindowError);
 
-    m_renderWindowContainer = QWidget::createWindowContainer(mRenderWindow);
+    mRenderWindowContainer = QWidget::createWindowContainer(mRenderWindow);
     addRenderWindow();
 }
 
@@ -63,10 +64,10 @@ void MainWindow::renderWindowReady()
 
 void MainWindow::renderWindowError(const QString &msg)
 {
-    m_output->append(tr("An error has occurred:\n%1").arg(msg));
+    mOutput->append(tr("An error has occurred:\n%1").arg(msg));
 }
 
 void MainWindow::addRenderWindow()
 {
-    ui->renderLayout->addWidget(m_renderWindowContainer);
+    ui->renderLayout->addWidget(mRenderWindowContainer);
 }

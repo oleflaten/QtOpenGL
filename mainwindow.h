@@ -29,11 +29,11 @@ private:
     void addRenderWindow();
     Ui::MainWindow *ui;
 
-    QWidget *m_renderWindowContainer;
+    QWidget *mRenderWindowContainer;
     RenderWindow *mRenderWindow;
-    QSurface *m_surface;
+    QSurface *mSurface;
 
-    QTextEdit *m_output;
+    QTextEdit *mOutput;
 };
 
 #endif // MAINWINDOW_H

@@ -7,7 +7,6 @@
 #include <QTime>
 
 class QOpenGLContext;
-class QOpenGLShaderProgram;
 class Shader;
 class MainWindow;
 
@@ -16,7 +15,8 @@ class RenderWindow : public QWindow, protected QOpenGLFunctions_4_1_Core
     Q_OBJECT
 public:
     RenderWindow(const QSurfaceFormat &format, MainWindow *mainWindow);
-    QOpenGLContext *context() { return m_context; }
+    ~RenderWindow();
+    QOpenGLContext *context() { return mContext; }
     void exposeEvent(QExposeEvent *) override;
     void changeTimer(int newTime);
 
@@ -30,11 +30,11 @@ private slots:
 private:
     void init();
 
-    QOpenGLContext *m_context;
-    bool m_initialized;
-    QOpenGLShaderProgram *m_program;
+    QOpenGLContext *mContext;
+    bool mInitialized;
     Shader *mShaderProgram;
-    GLint m_posAttr, m_colAttr, m_matrixUniform;
+    GLint  mMatrixUniform;
+    GLuint containerVAO;
 
     GLuint vertexBufferObject;
     GLuint colorbuffer;

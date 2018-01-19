@@ -1,5 +1,5 @@
 #include "shader.h"
-//#include "GL/glew.h"
+//#include "GL/glew.h" - using QOpenGLFunctions instead
 
 
 Shader::Shader(const GLchar *vertexPath, const GLchar *fragmentPath)
