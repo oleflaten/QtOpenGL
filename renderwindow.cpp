@@ -59,7 +59,7 @@ void RenderWindow::init()
     mShaderProgram = new Shader("../QtOpenGL/plainvertex.vert", "../QtOpenGL/plainfragment.frag");
 
 
-    //m_matrixUniform = glGetUniformLocation( mShaderProgram->Program, "matrix" ); // enable in shader and in render() function also to use matrix
+    //mMatrixUniform = glGetUniformLocation( mShaderProgram->Program, "matrix" ); // enable in shader and in render() function also to use matrix
 
     //Vertex Array  Object
     glGenVertexArrays( 1, &containerVAO );
@@ -69,11 +69,31 @@ void RenderWindow::init()
     glGenBuffers( 1, &vertexBufferObject );
     glBindBuffer( GL_ARRAY_BUFFER, vertexBufferObject );
     glBufferData( GL_ARRAY_BUFFER, sizeof( vertices ), vertices, GL_STATIC_DRAW );
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(
+                0,                  // attribute. No particular reason for 0, but must match the layout in the shader.
+                3,                  // size
+                GL_FLOAT,           // type
+                GL_FALSE,           // normalized?
+                0,                  // stride
+                (void*)0            // array buffer offset
+                );
 
     //Buffer to hold colors:
     glGenBuffers(1, &colorbuffer);
     glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
     glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors, GL_STATIC_DRAW);
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(
+                1,                                // attribute. No particular reason for 1, but must match the layout in the shader.
+                3,                                // size
+                GL_FLOAT,                         // type
+                GL_FALSE,                         // normalized?
+                0,                                // stride
+                (void*)0                          // array buffer offset
+                );
+
+    glBindVertexArray( 0 );     //unbind VAO
 }
 
 void RenderWindow::render()
@@ -111,31 +131,9 @@ void RenderWindow::render()
 
 //    glUniformMatrix4fv( m_matrixUniform, 1, GL_FALSE, modelviewmatrix);
 */
-    // 1rst attribute buffer : vertices
-    glEnableVertexAttribArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject);
-    glVertexAttribPointer(
-                0,                  // attribute. No particular reason for 0, but must match the layout in the shader.
-                3,                  // size
-                GL_FLOAT,           // type
-                GL_FALSE,           // normalized?
-                0,                  // stride
-                (void*)0            // array buffer offset
-                );
-
-    // 2nd attribute buffer : colors
-    glEnableVertexAttribArray(1);
-    glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
-    glVertexAttribPointer(
-                1,                                // attribute. No particular reason for 1, but must match the layout in the shader.
-                3,                                // size
-                GL_FLOAT,                         // type
-                GL_FALSE,                         // normalized?
-                0,                                // stride
-                (void*)0                          // array buffer offset
-                );
-
+    glBindVertexArray( containerVAO );
     glDrawArrays(GL_TRIANGLES, 0, 3);
+    glBindVertexArray( 0 );
     GLenum err = GL_NO_ERROR;
     while((err = glGetError()) != GL_NO_ERROR)
     {
